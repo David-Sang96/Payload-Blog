@@ -16,7 +16,11 @@
         "format": "prettier . --write",
         "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
         "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-        "seed": "tsx -r dotenv/config src/scripts/seed/script.ts"
+        "seed": "tsx -r dotenv/config src/scripts/seed/script.ts",
+        "nuke": "psql -U postgres -d payload_next_blog -c \"DROP SCHEMA public CASCADE; CREATE SCHEMA public;\" && pnpm payload migrate:fresh && pnpm seed",
+        "reset:articles": "psql -U postgres -d payload_next_blog -c \"TRUNCATE TABLE articles RESTART IDENTITY CASCADE;\"",
+        "reset:articles:seed": "psql -U postgres -d payload_next_blog -c \"TRUNCATE TABLE articles RESTART IDENTITY CASCADE;\" && pnpm seed",
+        "reset:content:seed": "psql -U postgres -d payload_next_blog -c \"TRUNCATE TABLE article_authors, articles, media RESTART IDENTITY CASCADE;\" && pnpm seed"
     },
     "dependencies": {
         "@payloadcms/db-postgres": "3.83.0",

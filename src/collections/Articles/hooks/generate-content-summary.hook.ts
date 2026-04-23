@@ -1,8 +1,6 @@
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import { FieldHook } from 'payload'
-import { slugify } from 'payload/shared'
-
-const MAX_SUMMARY_LENGTH = 160 // why 160 cuz it's best practice for SEO
+import { MAX_SUMMARY_LENGTH } from '../constansts'
 
 export const generateContentSummaryHook: FieldHook = ({ value, data }) => {
     if (value) return value.trim()
