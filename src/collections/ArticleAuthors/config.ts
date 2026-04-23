@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload'
+import { ARTICLE_AUTHOR_ROLE_OPTIONS } from './constants'
 
 export const ArticleAuthors: CollectionConfig = {
     slug: 'article-authors',
@@ -18,14 +19,8 @@ export const ArticleAuthors: CollectionConfig = {
         {
             name: 'role',
             type: 'select',
-            options: [
-                { value: 'staff_writer', label: 'Staff Writer' },
-                { value: 'guest_writer', label: 'Guest Writer' },
-                { value: 'flo_rida', label: 'Flo Rida' },
-                { value: 'contributor', label: 'Contributor' },
-                { value: 'editor', label: 'Editor' },
-            ],
-            defaultValue: 'staff_writer',
+            options: [...ARTICLE_AUTHOR_ROLE_OPTIONS],
+            defaultValue: ARTICLE_AUTHOR_ROLE_OPTIONS[0].value,
             required: true,
         },
     ],
