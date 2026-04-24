@@ -29,6 +29,7 @@
         "@payloadcms/ui": "3.83.0",
         "@plaiceholder/next": "^3.0.0",
         "@t3-oss/env-nextjs": "^0.13.11",
+        "@tailwindcss/postcss": "^4.2.4",
         "cross-env": "^7.0.3",
         "dotenv": "16.4.7",
         "drizzle-orm": "^0.45.2",
@@ -36,9 +37,11 @@
         "next": "16.2.3",
         "payload": "3.83.0",
         "plaiceholder": "^3.0.0",
+        "postcss": "^8.5.10",
         "react": "19.2.4",
         "react-dom": "19.2.4",
         "sharp": "0.34.2",
+        "tailwindcss": "^4.2.4",
         "zod": "^4.3.6"
     },
     "devDependencies": {
@@ -54,6 +57,7 @@
         "eslint-config-next": "16.2.3",
         "jsdom": "28.0.0",
         "prettier": "^3.4.2",
+        "prettier-plugin-tailwindcss": "0.0.0-insiders.f7d2598",
         "tsx": "4.21.0",
         "typescript": "5.7.3",
         "vite-tsconfig-paths": "6.0.5",
