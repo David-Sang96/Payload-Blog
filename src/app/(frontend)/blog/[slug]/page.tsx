@@ -1,54 +1,60 @@
 import Image from "next/image";
 import ArticleMetadata from "../_components/artice-metadata";
+import { RichText } from "@/lib/payload/components/rich-text";
+import { getArticleBySlug } from "@/collections/Articles/fetchers";
+import { notFound } from "next/navigation";
+import { formatRole, relationIsObject } from "../../lib";
 
 const publishedAt = new Date("2026-11-13T20:45:00");
 
-const BlogDetailPage = async () => {
+const BlogDetailPage = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) => {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+  if (!article) notFound();
+
+  if (!relationIsObject(article.coverImage)) return null;
+  if (
+    !relationIsObject(article.author) ||
+    !relationIsObject(article.author.avatar)
+  ) {
+    return null;
+  }
+
+  console.log(article.content);
+
   return (
-    <div className="prose lg:prose-lg dark:prose-invert">
-      <h1> How to Create a blog Tutorial No one asked for</h1>
+    <div className="prose lg:prose-lg dark:prose-invert max-w-full">
+      <h1> {article.title}</h1>
 
       <ArticleMetadata
         intent="post"
         data={{
           author: {
-            avatar: "https://via.assets.so/img.jpg?w=40&h=40&bg=6b7280&f=png",
-            name: "John Doe",
-            role: "Staff Writer",
+            avatar: article.author.avatar,
+            name: article.author.name,
+            role: formatRole(article.author.role),
           },
-          publishedAt,
-          readTimeMins: 2,
+          publishedAt: new Date(article.publishedAt ?? new Date()),
+          readTimeMins: article.readTimeInMins ?? 0,
         }}
         className="not-prose"
       />
 
       <Image
-        src={"https://via.assets.so/img.jpg?w=600&h=300&bg=6b7280&f=png"}
+        src={article.coverImage.url ?? ""}
         alt="Cover image"
         width={600}
         height={300}
         className="w-full rounded-md object-cover object-center"
+        placeholder="blur"
+        blurDataURL={article.coverImage.blurDataUrl}
       />
 
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates
-        iste dolorem maxime debitis ipsa dolore et quam dolorum totam quo,
-        similique, ratione minima perferendis itaque doloremque quas! Libero
-        nulla alias eaque ut dolore aspernatur cumque quod. Consectetur
-        consequuntur distinctio provident veritatis vitae sint adipisci ullam
-        libero architecto nisi hic dicta officiis nesciunt temporibus nemo
-        debitis facere eius, recusandae perferendis. Animi aperiam magnam
-        impedit libero! Corrupti debitis ipsam ducimus porro voluptatem dicta
-        minima minus, praesentium, tempora cum facere totam laborum hic rem
-        explicabo consequuntur, deleniti consectetur sunt distinctio delectus?
-        Repudiandae iusto quod praesentium ipsum cupiditate odio sed? Ea dolores
-        vitae iste quia praesentium repellendus? Cum possimus dolores architecto
-        laboriosam totam, velit, fuga pariatur distinctio illo quisquam
-        veritatis sunt doloremque asperiores? Culpa itaque assumenda quibusdam
-        magni ipsa sequi totam ullam! Accusantium eaque, tempora eveniet
-        similique cupiditate accusamus cumque magnam voluptas, repudiandae neque
-        consequatur, omnis esse possimus non facere quo. Deserunt, totam. Dicta.
-      </p>
+      <RichText lexicalData={article.content} />
     </div>
   );
 };
