@@ -1,7 +1,8 @@
 import { getPayloadClient } from "@/lib/payload/client";
-import { STATUS_OPTIONS } from "./constansts";
+import { CACHE_TAG_ARTICLES, STATUS_OPTIONS } from "./constansts";
+import { unstable_cache } from "next/cache";
 
-export async function getPublishedArticles() {
+async function _getPublishedArticles() {
   const payload = await getPayloadClient();
   try {
     const { docs: articles } = await payload.find({
@@ -27,3 +28,19 @@ export async function getPublishedArticles() {
     return [];
   }
 }
+
+export function cmsCache<T extends (...args: any[]) => Promise<any>>(
+  fn: T,
+  key: string[],
+  options?: { tags?: string[] },
+) {
+  return unstable_cache(fn, key, options);
+}
+
+export const getPublishedArticles = cmsCache(
+  _getPublishedArticles,
+  ["published-articles"],
+  {
+    tags: [CACHE_TAG_ARTICLES],
+  },
+);

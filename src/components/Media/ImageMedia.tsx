@@ -20,6 +20,7 @@ export const ImageMedia = ({ resource, className }: Props) => {
       src={url}
       alt={alt || ""}
       fill
+      sizes="(max-width: 768px) 100vw, 33vw"
       className={className}
       placeholder={blurDataUrl ? "blur" : "empty"}
       blurDataURL={blurDataUrl || undefined}

@@ -1,9 +1,9 @@
-import { slugify } from "payload/shared";
 import type { CollectionConfig, FieldHook } from "payload";
 import { generateSlugHook } from "./hooks/generate-slug.hook";
 import { generateContentSummaryHook } from "./hooks/generate-content-summary.hook";
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext";
-import { STATUS_OPTIONS } from "./constansts";
+import { CACHE_TAG_ARTICLES, STATUS_OPTIONS } from "./constansts";
+import { revalidateTag } from "next/cache";
 
 // fields
 // - title
@@ -103,4 +103,21 @@ export const Articles: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          await fetch("http://localhost:3000/api/revalidate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tag: CACHE_TAG_ARTICLES }),
+          });
+        } catch (err) {
+          console.error("Failed to revalidate cache", err);
+        }
+      },
+    ],
+  },
 };
