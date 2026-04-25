@@ -1,12 +1,14 @@
+import { Media } from "@/payload-types";
 import Image from "next/image";
 import React from "react";
+import { formatRole } from "../../lib";
 
 interface ArticleMetadata {
   data: {
     publishedAt: Date;
     readTimeMins: number;
     author: {
-      avatar: string;
+      avatar: Media;
       name: string;
       role: string;
     };
@@ -24,7 +26,7 @@ const ArticleMetadata = ({ data, intent, className }: ArticleMetadata) => {
         className={`flex items-center ${intent === "card" ? "gap-2" : "gap-3"}`}
       >
         <Image
-          src={author.avatar}
+          src={author.avatar.url ?? ""}
           alt={`${author.name}'s avatar`}
           width={40}
           height={40}
@@ -36,7 +38,7 @@ const ArticleMetadata = ({ data, intent, className }: ArticleMetadata) => {
           className={`flex flex-col leading-none ${intent === "card" ? "gap-1.5 text-sm" : "gap-2 text-base"}`}
         >
           <p className="font-bold">{author.name}</p>
-          <p className="text-dimmed">{author.role}</p>
+          <p className="text-dimmed">{formatRole(author.role)}</p>
         </div>
       </div>
 

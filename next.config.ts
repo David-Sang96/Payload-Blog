@@ -9,17 +9,8 @@ const dirname = path.dirname(__filename);
 
 const nextConfig: NextConfig = {
   images: {
-    localPatterns: [
-      {
-        pathname: "/api/media/file/**",
-      },
-    ],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "via.assets.so",
-      },
-    ],
+    localPatterns: [{ pathname: "/api/media/file/**" }],
+    remotePatterns: [{ protocol: "https", hostname: "via.assets.so" }],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
